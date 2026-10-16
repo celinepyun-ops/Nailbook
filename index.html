@@ -11,8 +11,6 @@ html,body{margin:0;height:100%;background:#fff}
 #splash .loop.on{opacity:1}
 #splash .go{position:absolute;left:50%;bottom:17cqh;transform:translate(-50%,8px);opacity:0;border:0;background:none;padding:12px 16px;font:400 13px/1 "Courier Prime",Courier,monospace;letter-spacing:.14em;text-transform:uppercase;color:#47131C;transition:opacity .8s ease,transform .8s ease;cursor:pointer}
 @keyframes breathe{0%,100%{opacity:1}50%{opacity:.45}}
-#splash .start{position:absolute;left:50%;bottom:17cqh;transform:translateX(-50%);border:0;background:none;padding:12px 16px;font:400 13px/1 "Courier Prime",Courier,monospace;letter-spacing:.14em;text-transform:uppercase;color:#47131C;opacity:0;pointer-events:none;transition:opacity .4s ease}
-#splash.ready .start{opacity:1;animation:breathe 2.4s ease-in-out infinite}
 #splash.done .panel{opacity:1}
 #splash.done .go{opacity:1;transform:translate(-50%,0);transition-delay:.3s;animation:breathe 2.4s ease-in-out 1.2s infinite}
 </style>
@@ -23,22 +21,24 @@ html,body{margin:0;height:100%;background:#fff}
     <img class="panel" src="assets/title.jpg" alt="The Nail Book">
     <video id="loopvid" class="loop" src="assets/wobble.mp4" muted playsinline webkit-playsinline loop preload="auto" aria-hidden="true"></video>
     <button class="go" type="button">Tap here</button>
-    <button class="start" type="button">Tap to start</button>
     <audio id="sfx" src="assets/intro.mp3" preload="auto"></audio>
   </div>
 </div>
 <script>
-(()=>{const sp=document.getElementById("splash"),v=document.getElementById("introvid"),L=document.getElementById("loopvid"),A=document.getElementById("sfx");let fallback;
+(()=>{const sp=document.getElementById("splash"),v=document.getElementById("introvid"),L=document.getElementById("loopvid"),A=document.getElementById("sfx");let fallback,needSound=false;
 function playLoop(){L.currentTime=0;const q=L.play();if(q&&q.catch)q.catch(()=>{});L.addEventListener("playing",()=>L.classList.add("on"),{once:true})}
-function finish(){clearTimeout(fallback);if(sp.classList.contains("done"))return;try{v.pause();if(v.duration)v.currentTime=v.duration}catch(e){}if(!A.paused&&A.currentTime<4)A.pause();sp.classList.add("done");playLoop()}
-function play(){sp.classList.remove("ready","done");L.pause();L.classList.remove("on");try{v.currentTime=0;A.currentTime=0}catch(e){}
-  const a=A.play();if(a&&a.catch)a.catch(()=>{});
-  const p=v.play();if(p&&p.catch)p.catch(finish);
+function sound(at){try{A.currentTime=at||0}catch(e){}const a=A.play();if(a&&a.then)a.then(()=>{needSound=false},()=>{needSound=true})}
+function finish(){clearTimeout(fallback);if(sp.classList.contains("done"))return;try{v.pause();if(v.duration)v.currentTime=v.duration}catch(e){}sp.classList.add("done");playLoop()}
+function show(){sp.classList.remove("done");L.pause();L.classList.remove("on");try{v.currentTime=0}catch(e){}sound(0);
+  const p=v.play();if(p&&p.catch)p.catch(()=>{});
   clearTimeout(fallback);fallback=setTimeout(finish,8500)}
+// Phones block sound until the first touch: if that happens, the first touch anywhere turns the sound on in sync.
+function unlock(){if(needSound&&!sp.classList.contains("done")&&v.currentTime<4.6)sound(v.currentTime)}
+["touchstart","pointerdown","keydown"].forEach(e=>addEventListener(e,unlock,{once:true,passive:true}));
 v.addEventListener("ended",finish);v.addEventListener("error",finish);
 v.addEventListener("timeupdate",()=>{if(v.duration&&v.currentTime>v.duration-.25)finish()});
-sp.addEventListener("click",()=>{if(sp.classList.contains("ready")||sp.classList.contains("done"))play();else finish()});
-sp.classList.add("ready");v.load();})();
+sp.addEventListener("click",()=>{if(sp.classList.contains("done"))show()});
+show();})();
 </script>
 
 </body></html>
