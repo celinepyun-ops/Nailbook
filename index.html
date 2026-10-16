@@ -11,6 +11,9 @@ html,body{margin:0;height:100%;background:#fff}
 #splash .loop.on{opacity:1}
 #splash .go{position:absolute;left:50%;bottom:17cqh;transform:translate(-50%,8px);opacity:0;border:0;background:none;padding:12px 16px;font:400 13px/1 "Courier Prime",Courier,monospace;letter-spacing:.14em;text-transform:uppercase;color:#47131C;transition:opacity .8s ease,transform .8s ease;cursor:pointer}
 @keyframes breathe{0%,100%{opacity:1}50%{opacity:.45}}
+#splash .snd{position:absolute;right:14px;top:14px;width:34px;height:34px;border:0;border-radius:50%;background:rgba(255,255,255,.75);color:#47131C;display:grid;place-items:center;padding:0;opacity:0;pointer-events:none;transition:opacity .4s ease}
+#splash.muted .snd{opacity:1;pointer-events:auto}
+#splash.done .snd{opacity:0;pointer-events:none}
 #splash.done .panel{opacity:1}
 #splash.done .go{opacity:1;transform:translate(-50%,0);transition-delay:.3s;animation:breathe 2.4s ease-in-out 1.2s infinite}
 </style>
@@ -21,13 +24,14 @@ html,body{margin:0;height:100%;background:#fff}
     <img class="panel" src="assets/title.jpg" alt="The Nail Book">
     <video id="loopvid" class="loop" src="assets/wobble.mp4" muted playsinline webkit-playsinline loop preload="auto" aria-hidden="true"></video>
     <button class="go" type="button">Tap here</button>
+    <button class="snd" type="button" aria-label="Turn sound on"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M4 9v6h4l5 4V5L8 9H4z" fill="currentColor" stroke="none"/><path d="M17 9l5 6M22 9l-5 6"/></svg></button>
     <audio id="sfx" src="assets/intro.mp3" preload="auto"></audio>
   </div>
 </div>
 <script>
 (()=>{const sp=document.getElementById("splash"),v=document.getElementById("introvid"),L=document.getElementById("loopvid"),A=document.getElementById("sfx");let fallback,needSound=false;
 function playLoop(){L.currentTime=0;const q=L.play();if(q&&q.catch)q.catch(()=>{});L.addEventListener("playing",()=>L.classList.add("on"),{once:true})}
-function sound(at){try{A.currentTime=at||0}catch(e){}const a=A.play();if(a&&a.then)a.then(()=>{needSound=false},()=>{needSound=true})}
+function sound(at){try{A.currentTime=at||0}catch(e){}const a=A.play();if(a&&a.then)a.then(()=>{needSound=false;sp.classList.remove("muted")},()=>{needSound=true;sp.classList.add("muted")})}
 function finish(){clearTimeout(fallback);if(sp.classList.contains("done"))return;try{v.pause();if(v.duration)v.currentTime=v.duration}catch(e){}sp.classList.add("done");playLoop()}
 function show(){sp.classList.remove("done");L.pause();L.classList.remove("on");try{v.currentTime=0}catch(e){}sound(0);
   const p=v.play();if(p&&p.catch)p.catch(()=>{});
