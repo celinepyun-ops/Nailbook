@@ -13,7 +13,7 @@ The flow follows how people decide at the salon: **shape → color → details �
 | `assets/wobble.mp4` | Looping gem wobble that plays behind "Tap to begin". |
 | `assets/title.jpg` | Final title frame ("The Nail Book"), shown after the intro. |
 | `assets/poster.jpg` | First frame of the intro, shown while the video loads. |
-| `assets/tapbegin.png` | "Tap to begin" set in PP Palma Fizzy Light, rendered as an image. |
+| `assets/tapbegin.png` | "Tap to begin" set in PP Palma Light, rendered as an image. |
 | `design/` | Source art: 4K title image, gem-frame still, text-free paper panel, original Kling intro clip. |
 
 ## Run it
