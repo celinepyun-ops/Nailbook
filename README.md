@@ -40,3 +40,9 @@ Then visit http://localhost:8000 (on a phone, use your computer's local IP).
 - Fonts load from Google Fonts. "Tap to begin" uses PP Palma (Pangram Pangram), included only as a rendered image; a public launch needs a Pangram Pangram web license.
 - Video and images were made with Figma Weave (Kling 3, Nano Banana Pro) and finished with ffmpeg.
 - Favorites are stored in the browser (`localStorage`).
+
+## Live landing (GitHub Pages)
+
+`index.html` is now the landing page only: gem intro, printed-ink "The Nail Book" title (tighter line spacing), wobble loop, and a "TAP HERE" button in Courier Prime. If the phone blocks autoplay, the intro waits for a tap instead of skipping to the end.
+
+The full clickable app (shape, color, details, result) is kept in `full-app.html`.
