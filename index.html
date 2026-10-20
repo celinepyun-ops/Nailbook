@@ -1,9 +1,10 @@
 <!doctype html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover"><meta name="theme-color" content="#ffffff">
 <title>The Nail Book</title>
-<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Courier+Prime&display=swap">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Courier+Prime&family=Libre+Caslon+Text:ital@1&family=Cedarville+Cursive&family=Permanent+Marker&display=swap">
 <style>
 html,body{margin:0;height:100%;background:#fff}
-#splash{position:fixed;inset:0;background:#fff;overflow:hidden;cursor:pointer;-webkit-tap-highlight-color:transparent}
+#splash{position:fixed;inset:0;z-index:2;background:#fff;overflow:hidden;cursor:pointer;-webkit-tap-highlight-color:transparent;transition:opacity .7s ease}
+#splash.gone{opacity:0;pointer-events:none}
 #splash .stage{position:absolute;left:50%;top:50%;width:min(360px,100vw,100dvh*9/16);aspect-ratio:9/16;transform:translate(-50%,-50%);container-type:size}
 #splash video,#splash .panel,#splash .loop{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;display:block}
 #splash .panel{opacity:0;transition:opacity .7s ease}
@@ -13,6 +14,72 @@ html,body{margin:0;height:100%;background:#fff}
 @keyframes breathe{0%,100%{opacity:1}50%{opacity:.45}}
 #splash.done .panel{opacity:1}
 #splash.done .go{opacity:1;transform:translate(-50%,0);transition-delay:.3s;animation:breathe 2.4s ease-in-out 1.2s infinite}
+
+[hidden]{display:none!important}
+/* Pages after the landing: pink paper, brown ink, Courier labels, Caslon italic headings. */
+:root{--ink:#47131C;--ink-soft:rgba(71,19,28,.6);--skin:#F4D8CB;--skin-edge:#E6BBA8}
+.pg{position:fixed;inset:0;background:#F0C8D4 url(assets/paper.jpg) center/cover;color:var(--ink);overflow-y:auto;-webkit-overflow-scrolling:touch;opacity:0;transition:opacity .6s ease .1s}
+.pg.on{opacity:1}
+.pg .col{box-sizing:border-box;min-height:100%;max-width:420px;margin:0 auto;padding:max(16px,env(safe-area-inset-top)) 18px max(28px,env(safe-area-inset-bottom))}
+.lab,.tx{font:400 12px/1 "Courier Prime",Courier,monospace;letter-spacing:.14em;text-transform:uppercase;color:var(--ink)}
+.tx{background:none;border:0;padding:12px 8px;cursor:pointer;-webkit-tap-highlight-color:transparent}
+.bar{display:flex;align-items:center;justify-content:space-between;min-height:44px}
+.bar .back{font-size:17px;letter-spacing:0;padding:10px 12px 10px 0}
+.pg h2{font:italic 400 34px/1.08 "Libre Caslon Text",Georgia,serif;letter-spacing:-.01em;margin:10px 0 6px;text-align:center}
+.pg .lede{font:400 12px/1.55 "Courier Prime",Courier,monospace;color:var(--ink-soft);text-align:center;margin:0 auto 18px;max-width:30ch}
+.tabs{display:flex;justify-content:center;gap:6px;margin-bottom:14px}
+.tabs .tx{color:var(--ink-soft)}
+.tabs .tx[aria-pressed="true"]{color:var(--ink);text-decoration:underline;text-underline-offset:6px}
+/* vibe stickers */
+.vibes{display:flex;flex-wrap:wrap;justify-content:center;gap:14px 10px;padding:6px 0 10px}
+.stk{position:relative;border:0;cursor:pointer;padding:13px 16px 11px;background:rgba(255,250,245,.82);box-shadow:0 1px 0 rgba(71,19,28,.08),0 6px 14px -8px rgba(71,19,28,.35);font:italic 400 19px/1 "Libre Caslon Text",Georgia,serif;color:var(--ink);-webkit-tap-highlight-color:transparent;transition:transform .2s ease}
+.stk:active{transform:scale(.96) rotate(var(--r))}
+.stk::before{content:"";position:absolute;left:50%;top:-8px;width:44px;height:14px;transform:translateX(-50%) rotate(-3deg);background:var(--tape);opacity:.85}
+.stk small{display:block;font:400 9px/1 "Courier Prime",Courier,monospace;letter-spacing:.14em;text-transform:uppercase;color:var(--ink-soft);margin-top:6px;font-style:normal}
+/* shape grid */
+.shapes{display:grid;grid-template-columns:repeat(3,1fr);gap:16px 8px;padding:4px 0 10px}
+.shp{border:0;background:none;cursor:pointer;display:flex;flex-direction:column;align-items:center;gap:6px;-webkit-tap-highlight-color:transparent;padding:6px 0}
+.shp svg{height:110px;width:auto;filter:drop-shadow(0 4px 6px rgba(71,19,28,.12))}
+.shp span{font:italic 400 17px/1 "Libre Caslon Text",Georgia,serif;color:var(--ink)}
+/* inspo board */
+.board{display:grid;grid-template-columns:1fr 1fr;gap:26px 14px;padding:16px 4px 8px}
+.pol{position:relative;border:0;cursor:pointer;background:#FFFCF8;padding:8px 8px 10px;box-shadow:0 1px 1px rgba(71,19,28,.08),0 10px 18px -10px rgba(71,19,28,.45);transform:rotate(var(--r));-webkit-tap-highlight-color:transparent}
+.pol:nth-child(even){margin-top:22px}
+.pol::before{content:"";position:absolute;left:50%;top:-9px;width:56px;height:17px;transform:translateX(-50%) rotate(var(--tr));background:var(--tape);opacity:.8;mix-blend-mode:multiply}
+.pol .ph{display:block;aspect-ratio:4/5;width:100%;overflow:hidden;background:#F4E6E3}
+.pol .ph svg{width:100%;height:100%;display:block}
+.pol .cap{display:block;font:400 11px/1.2 "Courier Prime",Courier,monospace;color:var(--ink);margin-top:8px;text-align:left}
+.end{text-align:center;padding:26px 0 6px;border-top:1px dashed rgba(71,19,28,.3);margin-top:26px}
+.end p{font:italic 400 20px/1.2 "Libre Caslon Text",Georgia,serif;margin:0 0 4px}
+.end a.tx{display:inline-block;text-decoration:underline;text-underline-offset:6px;font-size:13px}
+.end .tx.alt{color:var(--ink-soft)}
+
+/* Inspo board: scrapbook page (cream ruled notebook, pink grid polaroids, washi tape, red marker). */
+#board{background:#F7F1DE repeating-linear-gradient(to bottom,transparent 0 27px,rgba(120,150,190,.22) 27px 28px);}
+#board .col{padding-left:22px;padding-right:22px}
+#board .head{position:relative;text-align:center;padding:4px 0 2px}
+#board .the{font:400 30px/1 "Permanent Marker",cursive;letter-spacing:.32em;color:transparent;-webkit-text-stroke:1.3px #D3263B;display:block;margin:6px 0 0 .32em;transform:rotate(-2deg)}
+#board h2{font:400 40px/1.05 "Cedarville Cursive",cursive;color:#D3263B;margin:2px 0 0;transform:rotate(-2deg)}
+#board .lede{margin-top:8px}
+#board .kiss{position:absolute;right:-6px;top:22px;width:62px;transform:rotate(14deg);opacity:.85}
+#board .book{position:absolute;left:-4px;top:30px;width:50px;height:60px;transform:rotate(-10deg);background:#F2A9BE;border-radius:3px 6px 6px 3px;box-shadow:inset 5px 0 0 #E48DA6,0 3px 6px -2px rgba(71,19,28,.4);display:grid;place-items:center;text-align:center;font:400 10px/1.1 "Permanent Marker",cursive;color:#47131C;padding:0 3px 0 8px;box-sizing:border-box}
+#board .board{gap:18px 12px;padding-top:22px}
+#board .pol{background:repeating-linear-gradient(0deg,transparent 0 9px,rgba(214,120,150,.28) 9px 10px),repeating-linear-gradient(90deg,transparent 0 9px,rgba(214,120,150,.28) 9px 10px) #F9D6E2;padding:10px 10px 6px;box-shadow:0 1px 1px rgba(71,19,28,.1),0 10px 16px -10px rgba(71,19,28,.45)}
+#board .pol:nth-child(even){margin-top:14px}
+#board .pol::before,#board .pol::after{content:"";position:absolute;width:46px;height:16px;background:rgba(255,255,255,.55);box-shadow:0 0 0 .5px rgba(71,19,28,.06);mix-blend-mode:normal;opacity:1}
+#board .pol::before{left:-12px;top:6px;transform:rotate(-38deg)}
+#board .pol::after{right:-12px;bottom:34px;transform:rotate(-38deg)}
+#board .pol .ph{aspect-ratio:1/1.05}
+#board .pol .cap{font:400 21px/1.15 "Cedarville Cursive",cursive;color:#3A2A55;text-align:left;margin:6px 2px 0;padding-left:4px}
+#board .end p{font:400 30px/1.1 "Cedarville Cursive",cursive;color:#D3263B}
+#board .end{border-top:0}
+#zoom .pol{background:repeating-linear-gradient(0deg,transparent 0 9px,rgba(214,120,150,.28) 9px 10px),repeating-linear-gradient(90deg,transparent 0 9px,rgba(214,120,150,.28) 9px 10px) #F9D6E2;padding:12px 12px 8px}
+#zoom .pol .cap{font:400 28px/1.15 "Cedarville Cursive",cursive!important;color:#3A2A55;text-align:left;padding-left:4px}
+/* zoom */
+#zoom{position:fixed;inset:0;z-index:5;background:rgba(71,19,28,.35);display:grid;place-items:center;opacity:0;pointer-events:none;transition:opacity .3s ease}
+#zoom.on{opacity:1;pointer-events:auto}
+#zoom .pol{width:min(78vw,320px);transform:rotate(-1.5deg)}
+#zoom .pol .cap{font-size:13px}
 </style>
 </head><body>
 <div id="splash" role="main" aria-label="The Nail Book">
@@ -24,6 +91,88 @@ html,body{margin:0;height:100%;background:#fff}
     <audio id="sfx" src="assets/intro.mp3" preload="auto"></audio>
   </div>
 </div>
+
+<section id="mood" class="pg" aria-label="Pick your mood" hidden><div class="col">
+  <div class="bar"><button class="tx back" data-a="home" aria-label="Back to the start">&larr;</button><span class="lab">The Nail Book</span><span style="width:30px"></span></div>
+  <h2>What are you<br>in the mood for?</h2>
+  <p class="lede">Pick a vibe or a shape. We'll pin the inspo for you.</p>
+  <div class="tabs" role="group" aria-label="Browse by"><button class="tx" data-a="tab" data-v="vibe" aria-pressed="true">By vibe</button><button class="tx" data-a="tab" data-v="shape" aria-pressed="false">By shape</button></div>
+  <div id="vibes" class="vibes"></div>
+  <div id="shapes" class="shapes" hidden></div>
+</div></section>
+<section id="board" class="pg" aria-label="Inspo board" hidden><div class="col">
+  <div class="bar"><button class="tx back" data-a="mood" aria-label="Back">&larr;</button><span class="lab">Inspo book</span><span style="width:30px"></span></div>
+  <div class="head"><div class="book">Nail<br>Book</div><svg class="kiss" viewBox="0 0 100 60" aria-hidden="true"><path d="M4 30 C14 12 30 4 42 14 C46 17 50 17 54 14 C68 4 86 12 96 30 C82 30 70 28 50 31 C30 28 18 30 4 30Z" fill="#C8102E" opacity=".82"/><path d="M4 31 C20 34 32 36 50 35 C68 36 82 34 96 31 C86 50 66 58 50 56 C34 58 14 50 4 31Z" fill="#C8102E" opacity=".75"/><g stroke="#F7F1DE" stroke-width=".9" opacity=".55" fill="none"><path d="M20 22 L24 29M30 15 L33 28M40 15 L42 27M58 15 L57 27M68 15 L66 28M79 21 L75 29M22 36 L26 46M34 38 L36 52M46 39 L47 53M56 39 L55 53M66 38 L64 51M77 36 L73 46"/></g></svg><span class="the">THE</span><h2 id="btitle"></h2></div>
+  <p class="lede" id="blede"></p>
+  <div class="board" id="grid"></div>
+  <div class="end"><p>found the one?</p><a class="tx" id="salon" target="_blank" rel="noopener">Find nail salons near me &rarr;</a><br><button class="tx alt" data-a="mood">Pick another vibe</button></div>
+</div></section>
+<div id="zoom" role="dialog" aria-label="Inspo photo" data-a="close"></div>
+<script>
+(()=>{
+const SHAPES=[["square","Square"],["round","Round"],["oval","Oval"],["almond","Almond"],["coffin","Coffin"],["stiletto","Stiletto"]];
+const VIBES=[["cateye","Cat eye","magnetic shimmer"],["chrome","Chrome","mirror shine"],["cleangirl","Clean girl","sheer and glossy"],["glazed","Glazed donut","pearly glow"],["french","French tip","the classic"],["milky","Milky","soft white"],["aura","Aura","blurred color"],["jelly","Jelly","see-through tint"]];
+const NAMES={cateye:["midnight","plum velvet","galaxy"],chrome:["silver","rose chrome","gold leaf"],cleangirl:["just pink","ballet","sheer peach"],glazed:["donut","pearl","vanilla"],french:["classic","soft tip","baby french"],milky:["milk","cloud","oat milk"],aura:["pink aura","lilac haze","sunset"],jelly:["cherry","bubblegum","grape"]};
+const TAPES=["#E9B8C6","#CFE0D4","#F1DDB0","#D7CDEA","#F2C7B5","#BFD8E6"];
+const PHOTO_BG=["#F6E7E4","#EFE3EA","#F3EADF","#E8E6EE","#F1E1DC","#EAE7E0"];
+const LEN={short:56,medium:76,long:100};
+const $=id=>document.getElementById(id);
+let uid=0;
+function nailPath(shape,w,h){const b=`L${w} ${h-8} Q${w/2} ${h+10} 0 ${h-8} Z`;switch(shape){
+ case"square":return`M0 ${h-8} L0 4 Q0 0 4 0 L${w-4} 0 Q${w} 0 ${w} 4 ${b}`;
+ case"round":return`M0 ${h-8} L0 ${w/2} A${w/2} ${w/2} 0 0 1 ${w} ${w/2} ${b}`;
+ case"oval":{const y=w*.85;return`M0 ${h-8} L0 ${y} C0 ${w*.2} ${w*.22} 0 ${w/2} 0 C${w*.78} 0 ${w} ${w*.2} ${w} ${y} ${b}`}
+ case"almond":{const y=h*.5;return`M0 ${h-8} L0 ${y} C0 ${h*.22} ${w*.34} 0 ${w/2} 0 C${w*.66} 0 ${w} ${h*.22} ${w} ${y} ${b}`}
+ case"coffin":{const y=h*.42;return`M0 ${h-8} L0 ${y} L${w*.2} 3 Q${w*.22} 0 ${w*.27} 0 L${w*.73} 0 Q${w*.78} 0 ${w*.8} 3 L${w} ${y} ${b}`}
+ case"stiletto":{const y=h*.58;return`M0 ${h-8} L0 ${y} C0 ${h*.28} ${w*.44} ${h*.06} ${w/2} 0 C${w*.56} ${h*.06} ${w} ${h*.28} ${w} ${y} ${b}`}}}
+// Paint for each vibe: [defs, fill, overlay]
+function paint(v,k,w,h){const g="g"+(uid++);
+ switch(v){
+ case"cateye":{const a=["#2B1630","#14203A","#3A1020"][k%3];return[`<linearGradient id="${g}" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="${a}"/><stop offset=".42" stop-color="${a}"/><stop offset=".52" stop-color="#E9D7B8"/><stop offset=".6" stop-color="${a}"/><stop offset="1" stop-color="${a}"/></linearGradient>`,`url(#${g})`,""]}
+ case"chrome":return[`<linearGradient id="${g}" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#F4F5FA"/><stop offset=".45" stop-color="${["#C8CDDC","#D9B8C4","#C9B48C"][k%3]}"/><stop offset=".7" stop-color="#F7F0F4"/><stop offset="1" stop-color="#A9B1C7"/></linearGradient>`,`url(#${g})`,""];
+ case"cleangirl":return["",["#F2CFC9","#EFC3C0","#F5D9D2"][k%3],""];
+ case"glazed":return[`<linearGradient id="${g}" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#FBF4EE"/><stop offset=".5" stop-color="#F1E2E6"/><stop offset=".75" stop-color="#E6ECF4"/><stop offset="1" stop-color="#F8EDE4"/></linearGradient>`,`url(#${g})`,""];
+ case"french":return["",["#F3D5CF","#F0CDC6","#F6DCD6"][k%3],`<path d="M-2 -2 H${w+2} V${h*.3} Q${w/2} ${h*.12} -2 ${h*.3} Z" fill="#FFFFFF"/>`];
+ case"milky":return["",["#F8F1EC","#F5EEEE","#FAF4EE"][k%3],""];
+ case"aura":{const c=["#E77FA5","#9C7BD8","#F29A6B"][k%3];return[`<radialGradient id="${g}" cx=".5" cy=".55" r=".6"><stop offset="0" stop-color="${c}"/><stop offset="1" stop-color="#F7DCE6"/></radialGradient>`,`url(#${g})`,""]}
+ case"jelly":return["",["rgba(200,32,62,.72)","rgba(232,120,160,.7)","rgba(120,60,170,.65)"][k%3],""];
+ default:return["","#C98B95",""]}}
+function finger(x,y,w,h,shape,v,k,bottom){const id="c"+(uid++),p=nailPath(shape,w,h),fw=w+14,ftop=y+h-58,[defs,fill,over]=paint(v,k,w,h);
+ return`<defs>${defs}<clipPath id="${id}"><path d="${p}"/></clipPath></defs><rect x="${x-7}" y="${ftop}" width="${fw}" height="${bottom-ftop+40}" rx="${fw/2}" fill="var(--skin)" stroke="var(--skin-edge)"/>
+ <g transform="translate(${x} ${y})"><path d="${p}" fill="${fill}"/><g clip-path="url(#${id})">${over}</g><path d="${p}" fill="none" stroke="#47131C" stroke-opacity=".16"/>
+ <path d="M${w*.24} ${h*.72} Q${w*.18} ${h*.42} ${w*.3} ${h*.16}" stroke="#fff" stroke-opacity=".55" stroke-width="3" fill="none" stroke-linecap="round"/></g>`}
+function single(shape,len,v){const h=LEN[len],H=h+50;return`<svg viewBox="-12 -6 64 ${H}" aria-hidden="true">${finger(0,0,40,h,shape,v||"",0,H)}</svg>`}
+// A placeholder "photo": three fingers on a soft background, angled like a snapshot.
+function photo(shape,len,v,k){const h=LEN[len]*.9,W=[34,38,33],OFF=[22,0,18],H=200;let x=18,out="";
+ W.forEach((w,i)=>{out+=finger(x,OFF[i]+52,w,h,shape,v,k+i,H);x+=w+14});
+ const rot=[-8,6,-4,9,-6,3][k%6];
+ return`<svg viewBox="0 0 160 200" aria-hidden="true"><rect width="160" height="200" fill="${PHOTO_BG[k%PHOTO_BG.length]}"/><g transform="rotate(${rot} 80 120) translate(${(160-x)/2+2} 0)">${out}</g></svg>`}
+const st={tab:"vibe",pick:null};
+function rnd(i,a){return((i*37)%7-3)*a}
+function drawMood(){
+ $("vibes").innerHTML=VIBES.map(([k,n,sub],i)=>`<button class="stk" data-a="vibe" data-v="${k}" style="--r:${rnd(i+1,.9)}deg;transform:rotate(${rnd(i+1,.9)}deg);--tape:${TAPES[i%TAPES.length]}">${n}<small>${sub}</small></button>`).join("");
+ $("shapes").innerHTML=SHAPES.map(([k,n])=>`<button class="shp" data-a="shape" data-v="${k}">${single(k,"medium","")}<span>${n}</span></button>`).join("")}
+function drawBoard(){uid=0;const isV=st.pick.type==="vibe";
+ const name=isV?VIBES.find(v=>v[0]===st.pick.k)[1]:SHAPES.find(s=>s[0]===st.pick.k)[1];
+ $("btitle").textContent=(isV?name:name+" nails").toLowerCase();
+ $("blede").textContent=isV?"Taped in for you. Tap a photo to see it bigger.":"Every vibe, in your shape. Tap a photo to see it bigger.";
+ const items=[];for(let i=0;i<6;i++){const shape=isV?SHAPES[(i*2+3)%6][0]:st.pick.k,v=isV?st.pick.k:VIBES[i%VIBES.length][0],len=["medium","long","short"][i%3];
+  const vn=VIBES.find(x=>x[0]===v)[1].toLowerCase(),sn=SHAPES.find(x=>x[0]===shape)[1].toLowerCase();
+  items.push(`<button class="pol" data-a="zoom" style="--r:${rnd(i+2,.8)}deg;--tr:${rnd(i+5,1.5)}deg;--tape:${TAPES[(i+2)%TAPES.length]}"><span class="ph">${photo(shape,len,v,i)}</span><span class="cap">${NAMES[v][i%3]}</span></button>`)}
+ $("grid").innerHTML=items.join("");
+ const q=encodeURIComponent((isV?name:name+" shape")+" nail salon");
+ $("salon").href=/iPhone|iPad|Mac/.test(navigator.userAgent)?`https://maps.apple.com/?q=${q}`:`https://www.google.com/maps/search/${q}+near+me`}
+function go(from,to){if(from){from.classList.remove("on");setTimeout(()=>{from.hidden=true},600)}if(!to)return;to.hidden=false;to.scrollTop=0;requestAnimationFrame(()=>requestAnimationFrame(()=>to.classList.add("on")))}
+document.addEventListener("click",e=>{const b=e.target.closest("[data-a]");if(!b||b.closest("#splash"))return;const a=b.dataset.a;
+ if(a==="tab"){st.tab=b.dataset.v;document.querySelectorAll(".tabs .tx").forEach(t=>t.setAttribute("aria-pressed",t.dataset.v===st.tab));$("vibes").hidden=st.tab!=="vibe";$("shapes").hidden=st.tab!=="shape"}
+ if(a==="vibe"||a==="shape"){st.pick={type:a,k:b.dataset.v};drawBoard();go($("mood"),$("board"))}
+ if(a==="mood")go($("board"),$("mood"));
+ if(a==="home"){go($("mood"),null);window.NB.replay()}
+ if(a==="zoom"){const z=$("zoom");z.innerHTML=b.outerHTML.replace('data-a="zoom"','data-a="close"');z.classList.add("on")}
+ if(a==="close")$("zoom").classList.remove("on")});
+window.NB={open(){drawMood();go(null,$("mood"));document.getElementById("splash").classList.add("gone");document.querySelectorAll("#splash video").forEach(v=>{try{v.pause()}catch(_){}})}};
+})();
+</script>
 <script>
 (()=>{const sp=document.getElementById("splash"),v=document.getElementById("introvid"),L=document.getElementById("loopvid"),A=document.getElementById("sfx");let fallback,needSound=false;
 function playLoop(){L.currentTime=0;const q=L.play();if(q&&q.catch)q.catch(()=>{});L.addEventListener("playing",()=>L.classList.add("on"),{once:true})}
@@ -37,7 +186,8 @@ function unlock(){if(needSound&&!sp.classList.contains("done")&&v.currentTime<4.
 ["touchstart","pointerdown","keydown"].forEach(e=>addEventListener(e,unlock,{once:true,passive:true}));
 v.addEventListener("ended",finish);v.addEventListener("error",finish);
 v.addEventListener("timeupdate",()=>{if(v.duration&&v.currentTime>v.duration-.25)finish()});
-sp.addEventListener("click",()=>{if(sp.classList.contains("done"))show()});
+sp.addEventListener("click",()=>{if(sp.classList.contains("done"))window.NB.open()});
+window.NB.replay=()=>{sp.classList.remove("gone");show()};
 show();})();
 </script>
 
