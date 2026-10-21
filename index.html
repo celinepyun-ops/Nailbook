@@ -64,7 +64,7 @@ html,body{margin:0;height:100%;background:#fff}
 #board .kiss{position:absolute;right:-6px;top:22px;width:62px;transform:rotate(14deg);opacity:.85}
 #board .book{position:absolute;left:-4px;top:30px;width:50px;height:60px;transform:rotate(-10deg);background:#F2A9BE;border-radius:3px 6px 6px 3px;box-shadow:inset 5px 0 0 #E48DA6,0 3px 6px -2px rgba(71,19,28,.4);display:grid;place-items:center;text-align:center;font:400 10px/1.1 "Permanent Marker",cursive;color:#47131C;padding:0 3px 0 8px;box-sizing:border-box}
 #board .board{gap:18px 12px;padding-top:22px}
-#board .pol{background:repeating-linear-gradient(0deg,transparent 0 9px,rgba(214,120,150,.28) 9px 10px),repeating-linear-gradient(90deg,transparent 0 9px,rgba(214,120,150,.28) 9px 10px) #F9D6E2;padding:10px 10px 6px;box-shadow:0 1px 1px rgba(71,19,28,.1),0 10px 16px -10px rgba(71,19,28,.45)}
+#board .pol{background:#F0C8D4 url(assets/paper.jpg) center/180% auto;padding:10px 10px 6px;box-shadow:0 1px 1px rgba(71,19,28,.1),0 10px 16px -10px rgba(71,19,28,.45)}
 #board .pol:nth-child(even){margin-top:14px}
 #board .pol::before,#board .pol::after{content:"";position:absolute;width:46px;height:16px;background:rgba(255,255,255,.55);box-shadow:0 0 0 .5px rgba(71,19,28,.06);mix-blend-mode:normal;opacity:1}
 #board .pol::before{left:-12px;top:6px;transform:rotate(-38deg)}
@@ -73,8 +73,14 @@ html,body{margin:0;height:100%;background:#fff}
 #board .pol .cap{font:400 21px/1.15 "Cedarville Cursive",cursive;color:#3A2A55;text-align:left;margin:6px 2px 0;padding-left:4px}
 #board .end p{font:400 30px/1.1 "Cedarville Cursive",cursive;color:#D3263B}
 #board .end{border-top:0}
-#zoom .pol{background:repeating-linear-gradient(0deg,transparent 0 9px,rgba(214,120,150,.28) 9px 10px),repeating-linear-gradient(90deg,transparent 0 9px,rgba(214,120,150,.28) 9px 10px) #F9D6E2;padding:12px 12px 8px}
+#zoom .pol{background:#F0C8D4 url(assets/paper.jpg) center/180% auto;padding:12px 12px 8px}
 #zoom .pol .cap{font:400 28px/1.15 "Cedarville Cursive",cursive!important;color:#3A2A55;text-align:left;padding-left:4px}
+
+/* Drag photos around the board: hold briefly, then move. */
+#board .pol{transition:scale .18s ease,box-shadow .18s ease;-webkit-user-select:none;user-select:none;-webkit-touch-callout:none}
+#board .pol.lift{scale:1.07;z-index:20;box-shadow:0 2px 2px rgba(71,19,28,.12),0 22px 30px -12px rgba(71,19,28,.55);transition:scale .18s ease,box-shadow .18s ease}
+#board .pol svg{pointer-events:none}
+#board .hint{font:400 11px/1.4 "Courier Prime",Courier,monospace;color:var(--ink-soft);text-align:center;margin:-6px 0 0}
 /* zoom */
 #zoom{position:fixed;inset:0;z-index:5;background:rgba(71,19,28,.35);display:grid;place-items:center;opacity:0;pointer-events:none;transition:opacity .3s ease}
 #zoom.on{opacity:1;pointer-events:auto}
@@ -155,7 +161,7 @@ function drawMood(){
 function drawBoard(){uid=0;const isV=st.pick.type==="vibe";
  const name=isV?VIBES.find(v=>v[0]===st.pick.k)[1]:SHAPES.find(s=>s[0]===st.pick.k)[1];
  $("btitle").textContent=(isV?name:name+" nails").toLowerCase();
- $("blede").textContent=isV?"Taped in for you. Tap a photo to see it bigger.":"Every vibe, in your shape. Tap a photo to see it bigger.";
+ $("blede").textContent=isV?"Tap a photo to see it bigger. Hold one to move it around.":"Every vibe in your shape. Tap to see it bigger, hold to move it.";
  const items=[];for(let i=0;i<6;i++){const shape=isV?SHAPES[(i*2+3)%6][0]:st.pick.k,v=isV?st.pick.k:VIBES[i%VIBES.length][0],len=["medium","long","short"][i%3];
   const vn=VIBES.find(x=>x[0]===v)[1].toLowerCase(),sn=SHAPES.find(x=>x[0]===shape)[1].toLowerCase();
   items.push(`<button class="pol" data-a="zoom" style="--r:${rnd(i+2,.8)}deg;--tr:${rnd(i+5,1.5)}deg;--tape:${TAPES[(i+2)%TAPES.length]}"><span class="ph">${photo(shape,len,v,i)}</span><span class="cap">${NAMES[v][i%3]}</span></button>`)}
@@ -168,9 +174,31 @@ document.addEventListener("click",e=>{const b=e.target.closest("[data-a]");if(!b
  if(a==="vibe"||a==="shape"){st.pick={type:a,k:b.dataset.v};drawBoard();go($("mood"),$("board"))}
  if(a==="mood")go($("board"),$("mood"));
  if(a==="home"){go($("mood"),null);window.NB.replay()}
- if(a==="zoom"){const z=$("zoom");z.innerHTML=b.outerHTML.replace('data-a="zoom"','data-a="close"');z.classList.add("on")}
+ if(a==="zoom"){const z=$("zoom");z.innerHTML=b.outerHTML.replace('data-a="zoom"','data-a="close"').replace(/translate:[^;"]*;?/,"").replace(/z-index:[^;"]*;?/,"");z.classList.add("on")}
  if(a==="close")$("zoom").classList.remove("on")});
 window.NB={open(){drawMood();go(null,$("mood"));document.getElementById("splash").classList.add("gone");document.querySelectorAll("#splash video").forEach(v=>{try{v.pause()}catch(_){}})}};
+})();
+</script>
+<script>
+// Move taped photos around the board. Touch: hold ~0.2s then drag (a quick swipe still scrolls). Mouse: just drag.
+(()=>{let z=30,cur=null;
+function setPos(el,x,y){el.dataset.x=x;el.dataset.y=y;el.style.translate=`${x}px ${y}px`}
+function start(el,cx,cy){cur={el,cx,cy,x:+(el.dataset.x||0),y:+(el.dataset.y||0)};el.classList.add("lift");el.style.zIndex=++z}
+function move(cx,cy){if(!cur)return;setPos(cur.el,cur.x+cx-cur.cx,cur.y+cy-cur.cy);cur.el.dataset.dragged="1"}
+function end(){if(!cur)return;const el=cur.el;el.classList.remove("lift");cur=null;setTimeout(()=>{delete el.dataset.dragged},50)}
+const grid=document.getElementById("grid");let t=null,sx=0,sy=0,pend=null;
+grid.addEventListener("touchstart",e=>{const el=e.target.closest(".pol");if(!el||e.touches.length>1)return;const p=e.touches[0];sx=p.clientX;sy=p.clientY;pend=el;
+ t=setTimeout(()=>{t=null;start(pend,sx,sy);if(navigator.vibrate)navigator.vibrate(8)},180)},{passive:true});
+grid.addEventListener("touchmove",e=>{const p=e.touches[0];if(cur){e.preventDefault();move(p.clientX,p.clientY);return}
+ if(t&&Math.hypot(p.clientX-sx,p.clientY-sy)>8){clearTimeout(t);t=null}},{passive:false});
+["touchend","touchcancel"].forEach(n=>grid.addEventListener(n,()=>{if(t){clearTimeout(t);t=null}end()}));
+grid.addEventListener("contextmenu",e=>{if(e.target.closest(".pol"))e.preventDefault()});
+grid.addEventListener("pointerdown",e=>{if(e.pointerType!=="mouse")return;const el=e.target.closest(".pol");if(!el)return;sx=e.clientX;sy=e.clientY;pend=el;
+ const mv=ev=>{if(!cur&&Math.hypot(ev.clientX-sx,ev.clientY-sy)>4)start(pend,sx,sy);move(ev.clientX,ev.clientY)};
+ const up=()=>{removeEventListener("pointermove",mv);removeEventListener("pointerup",up);end()};
+ addEventListener("pointermove",mv);addEventListener("pointerup",up)});
+// A drag shouldn't also open the photo.
+grid.addEventListener("click",e=>{const el=e.target.closest(".pol");if(el&&el.dataset.dragged){e.stopImmediatePropagation();e.preventDefault()}},true);
 })();
 </script>
 <script>
